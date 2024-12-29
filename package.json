@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "playwright": "^1.49.1",
+    "wikibase-dump-filter": "^6.0.0"
+  },
+  "scripts": {
+    "start": "node importfilter.cjs"
+  }
+}

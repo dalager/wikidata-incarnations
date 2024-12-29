@@ -1,0 +1,178 @@
+<html>
+  <head>
+    <title>Reinkarnation for {{person.name}}</title>
+    <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 50px;
+              background-color: #f4f4f4;
+              color: #333;
+            }
+            h2 {
+              color: #444;
+            }
+            h1 {
+              text-align: center;
+              margin-top: 20px;
+            }
+            h2 {
+              margin-top: 40px;
+            }
+            p {
+              text-align: left;
+              margin: 20px;
+            }
+            table {
+              width: 100%;
+              margin: 20px auto;
+              border-collapse: collapse;
+              background-color: #fff;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            th,
+            td {
+              padding: 10px;
+              text-align: left;
+              border-bottom: 1px solid #ddd;
+            }
+            th {
+              background-color: #f2f2f2;
+            }
+            tr:hover {
+              background-color: #f1f1f1;
+            }
+            a {
+              color: #1a73e8;
+              text-decoration: none;
+            }
+            a:hover {
+              text-decoration: underline;
+            }
+            img.icon {
+              height: 28px;
+            }
+            .banner {
+              background-color: rgb(72, 19, 118);
+              color: #fff;
+              padding: 30px;
+              margin: 0;
+              text-align: center;
+              font-size: x-large;
+              overflow: auto;
+            }
+            .banner div.graph {
+              float: right;
+            }
+            .banner div.text {
+              float: left;
+              width: 80%;
+            }
+            div.graph img {
+              width: 300px;
+              height: 300px;
+            }
+
+            .banner p {
+              text-align: center;
+            }
+            footer {
+              color: #666;
+              padding: 10px;
+              margin: 0;
+              text-align: right;
+              font-size: small;
+              bottom: 0;
+              width: 100%;
+            }
+            footer p {
+              text-align: right;
+            }
+      @media print {
+              h2 {
+                page-break-before: always;
+              }
+
+              body {
+                margin: 0;
+              }
+              footer {
+                position: fixed;
+                bottom: 0;
+                width: 80%;
+              }
+              .banner div.graph {
+                float: none;
+              }
+            .banner div.graph img {
+              width: 100%;
+                float: none;
+            }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="banner">
+      <div class="text">
+        <h1>
+          Lineage for {{person.name}} ({{person.birthday.strftime("%Y-%m-%d")}})
+        </h1>
+        <p>Ten possible paths from the past.</p>
+        <p>
+          Found {{"{:,}".format(person.incarnationcount)}} people in your
+          lineage among 2,000,000 people with registered birth and death dates
+          in the Wikipedia database.
+        </p>
+        <p>These are the ten longest paths I could find</p>
+      </div>
+      <div class="graph">
+        {% if(hasPlot)%}
+        <img src="{{person.id}}.png" />
+        {%endif%}
+      </div>
+    </div>
+
+    {% for reincarnation_path in reincarnation_paths %}
+    <h2>Path {{loop.index}} - {{reincarnation_path.length}} incarnations</h2>
+    <table>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Born</th>
+        <th>Died</th>
+        <th>Age</th>
+        <th>Wiki</th>
+      </tr>
+      {% for incarnation in reincarnation_path.path %}
+      <tr>
+        <td>{{loop.index}}</td>
+        <td>{{incarnation.name}}</td>
+        <td>{{incarnation.country}}</td>
+        <td>{{incarnation.birthdate}}</td>
+        <td>{{incarnation.deathdate}}</td>
+        <td>{{incarnation.age}}</td>
+        <td>
+          {% if(incarnation.wikilink)%}
+          <a href="{{incarnation.wikilink}}"
+            ><img class="icon" src="wikipedialogo.svg"
+          /></a>
+          {%else%}
+          <a href="{{incarnation.wikidata}}"
+            ><img class="icon" src="wikidatawiki.png"
+          /></a>
+          {%endif%}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% endfor %}
+  </body>
+
+  <footer>
+    <p>
+      Created {{generated}} by
+      <a href="https://dalager.com">dalager.com</a>
+    </p>
+  </footer>
+</html>
