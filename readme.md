@@ -1,6 +1,6 @@
 # Wikidata Incarnations
 
-<img src="christian_dalager.png" alt="Christian Dalager" style="float:right;height:auto;width:200px"/>
+<img align="right" src="christian_dalager.png" alt="Christian Dalager" style="float:right;height:auto;width:200px"/>
 
 This is a silly idea.
 
