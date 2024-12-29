@@ -1,8 +1,13 @@
 # Wikidata Incarnations
 
-This is silly idea.
+<img src="christian_dalager.png" alt="Christian Dalager" style="float:right;height:auto;width:200px"/>
 
-Let us build a personal reincarnation lineage report based on ~2 million people from wikidata with precise birth and death dates.
+This is a silly idea.
+
+Let us build a personal reincarnation lineage report based on the ~2 million people from <https://wikidata.org> registered with precise birth and death dates.
+
+We will assume that reincarnation is a thing that happens in linear time and that your soul performs the jump on the day you die.
+<br style="clear:both" />
 
 ## The data
 
@@ -20,6 +25,57 @@ id,P569,P570,P27,label,sitelinks
 - **P27** is country of citizenship (Q31 for Belgium)
 - **label** is the name of the person (Paul Otlet)
 - **sitelinks** is a json object with links to wikipedia pages in different languages
+
+## Build lineage report
+
+The lineage report is output as a html file that you can open in your browser and print to pdf with clickable links to wikipedia or wikidata.
+
+![Screenshot of report](screenshot.png)
+
+### 0. Prerequisites
+
+- Python (3.13+)
+- VS Code with the Jupyter extension
+
+Install the requirements with:
+
+```bash
+python -m venv venv
+source venv/bin/activate # or  venv\Scripts\activate on windows
+pip install -r requirements.txt
+```
+
+### 1. Load and clean with
+
+Use [01_load_and_clean.ipynb](01_load_and_clean.ipynb)
+
+It will cleanup the data save it to a new (gitignored) file: [born_and_died_slim_cleaned.csv](born_and_died_slim_cleaned.csv)
+
+### 2. Configure reincarnation report
+
+Use [02_single_person_lineage.ipynb](02_single_person_lineage.ipynb)
+
+Edit you personal details in the notebook:
+
+```python
+# Define the birthday to explore
+my_name = "Christian Dalager"
+my_birthday = datetime(1973, 9, 20)
+my_id = "christian_dalager"
+
+skipImagePlot = True
+forceImagePlotRegeneration = False
+```
+
+Creating the plot will take up to 100 minutes, so enable that flag only if you are satisfied with the rest.
+
+### 3. Run the notebook
+
+Still in [02_single_person_lineage.ipynb](02_single_person_lineage.ipynb), run the notebook.
+
+Your html report will sit in the current directory with the name `christian_dalager.html` (or whatever you set `my_id` to).
+
+If you want to customize the layout of the report, you can edit the `htmltemplate.jinja` file before generating the report. Its a fairly simple jinja2 template with some basic CSS.
 
 ## How I got the data
 
@@ -62,8 +118,3 @@ python convert_ndjson_to_csv.py
 ```
 
 result is 450 mb, 2.953.301 rows.
-
-## Working with the data
-
-1. Load and clean with [01_load_and_clean.ipynb](01_load_and_clean.ipynb)
-2. Create reincarnation report with [02_single_person_lineage.ipynb](03_single_person_lineage.ipynb)
